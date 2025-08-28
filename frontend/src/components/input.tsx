@@ -37,7 +37,7 @@ const Input: React.FC<InputProps> = (props: InputProps) => {
 
     return (
         <div className={className}>
-            <label htmlFor={inputId} className="block pt-4 mb-1 text-sm font-medium text-gray-900">
+            <label htmlFor={inputId} className="block py-1 mb-1 text-sm font-medium text-gray-900">
                 {label}{required && <span className="ml-1 text-red-600">*</span>}
             </label>
             <input

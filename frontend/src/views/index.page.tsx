@@ -117,9 +117,6 @@ export default function App() {
     }
   }
 
-
-
-
   useEffect(() => {
     fetchIncidents();
   }, []);
@@ -145,16 +142,15 @@ export default function App() {
                 onChange={(e: any) => setDescription(e.target.value)}
               />
 
-              {/* Dropdown de incident_type */}
               <Dropdown
                 label="Incident Type"
-                options={INCIDENT_TYPES} // si tu Dropdown espera otro formato, mapea a {label, value}
+                options={INCIDENT_TYPES} 
                 value={incidentType}
                 onChange={(v: IncidentType) => setIncidentType(v)}
               />
               {errors.incident_type && <p className="text-xs text-red-600">{errors.incident_type}</p>}
 
-              <h4 className="pt-2 text-center text-sm font-medium text-gray-700">
+              <h4 className="pt-2  text-sm font-medium text-gray-700">
                 Enter the location (optional)
               </h4>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -173,7 +169,6 @@ export default function App() {
               </div>
               {errors.location && <p className="text-xs text-red-600">{errors.location}</p>}
 
-              {/* Imagen opcional */}
               <div className="mt-2">
                 <label className="mb-1 block text-sm font-medium text-neutral-800">
                   image (optional)
@@ -191,7 +186,6 @@ export default function App() {
                 )}
               </div>
 
-              {/* Submit */}
               <div className="pt-2">
                 <Button type="submit" disabled={submitting}>
                   {submitting ? "Saving..." : "Create Incident"}
