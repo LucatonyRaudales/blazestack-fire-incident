@@ -46,10 +46,10 @@ const helpers = {
     },
     typeColor: (t: string): { bg: string } => {
         const key = t.toLowerCase();
-        if (key === "fire") return { bg: "#ef4444" };     // red-500
-        if (key === "medical") return { bg: "#10b981" };  // emerald-500
-        if (key === "police") return { bg: "#6366f1" };   // indigo-500
-        return { bg: "#6b7280" }; // gray-500 (default)
+        if (key === "fire") return { bg: "#ef4444" };    
+        if (key === "electrical") return { bg: "#10b981" }; 
+        if (key === "hazmat") return { bg: "#6366f1" };  
+        return { bg: "#6b7280" }; 
     },
     locationLabel: (loc?: GeoJSONPoint): string | null => {
         if (!loc) return null;
