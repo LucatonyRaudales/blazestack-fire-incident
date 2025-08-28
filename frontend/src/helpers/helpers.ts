@@ -21,10 +21,11 @@ const helpers = {
     },
     buildLocation: ({ lat, lng }: BuildLocationInput): GeoJSONPoint | undefined => {
         if (!lat || !lng) return undefined;
+        console.log("lat", lat, "lng", lng)
         const latNum = Number(lat);
         const lngNum = Number(lng);
         if (!Number.isFinite(latNum) || !Number.isFinite(lngNum)) return undefined;
-        return { type: "Point", latitude: latNum, longitude: lngNum };
+        return { latitude: latNum, longitude: lngNum };
     }
 
 }
@@ -41,10 +42,8 @@ type BuildLocationInput = {
     lng?: string
 }
 export type GeoJSONPoint = {
-    type: "Point";
     latitude:  number;
     longitude: number
-    address?: string;
 };
 
 

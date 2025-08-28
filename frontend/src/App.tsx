@@ -73,6 +73,7 @@ export default function App() {
         fd.append("incident_type", incidentType);
         if (description.trim()) fd.append("description", description.trim());
         if (locationStr) fd.append("location", locationStr);
+        console.info("locationStr", locationStr)
         fd.append("image", imageFile);
 
         res = await fetch(`${API_URL}/api/incidents`, {

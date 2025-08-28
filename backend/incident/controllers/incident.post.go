@@ -24,7 +24,7 @@ type createReq struct {
 	Title        string `form:"title" json:"title" binding:"required"`
 	Description  string `form:"description" json:"description"`
 	IncidentType string `form:"incident_type" json:"incident_type" binding:"required"`
-	Location     *model.Location `json:"location"`
+	Location     *model.Location `form:"location" json:"location"`
 	ImageBase64  string `form:"imageBase64" json:"imageBase64"`
 }
 

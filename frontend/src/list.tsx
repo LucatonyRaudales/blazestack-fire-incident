@@ -155,7 +155,6 @@ function timeAgo(iso: string): string {
 
 function locationLabel(loc?: GeoJSONPoint): string | null {
     if (!loc) return null;
-    if (loc.address) return loc.address;
 
     const { latitude, longitude } = loc
     if (Number.isFinite(latitude) && Number.isFinite(longitude)) {
