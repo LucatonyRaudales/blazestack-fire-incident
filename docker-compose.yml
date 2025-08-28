@@ -10,7 +10,6 @@ services:
       - "3000:3000"
     environment:
       - GIN_MODE=debug
-      - PUBLIC_BASE_URL=http://localhost:3000
     volumes:
       - ./backend:/app
       - go-mod:/go/pkg/mod
@@ -25,8 +24,6 @@ services:
     ports:
       - "5173:5173"
     environment:
-      - CHOKIDAR_USEPOLLING=true
-      - WATCHPACK_POLLING=true
       - VITE_API_BASE=http://localhost:3000
     volumes:
       - ./frontend:/app

@@ -46,7 +46,6 @@ const Dropdown = (props: DropdownProps) => {
         };
     }, [open]);
 
-    // Focus en el item seleccionado al abrir
     useEffect(() => {
         if (open) {
             const idx = Math.max(0, selectedIndex);
@@ -73,7 +72,6 @@ const Dropdown = (props: DropdownProps) => {
                 {required && <span className="ml-1 text-red-600">*</span>}
             </label>
 
-            {/* Hidden input por si usas <form> nativo */}
             {name && <input type="hidden" name={name} value={value} />}
 
             <div className="relative">

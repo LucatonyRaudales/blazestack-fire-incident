@@ -15,26 +15,21 @@ import (
 func setupRouter() *gin.Engine {
 	r := gin.Default()
 
-	// CORS por defecto (permite dev local: :5173 → :3000)
 	r.Use(cors.Default())
 
-	// Estáticos para /uploads
 	uploadsDir := "server/uploads"
 	if err := os.MkdirAll(uploadsDir, 0755); err != nil {
 		log.Printf("warning: could not create uploads dir: %v", err)
 	}
 	r.Static("/uploads", uploadsDir)
 
-	// Store con persistencia JSON (opcional). Cambia a false si no quieres persistir.
 	store := storage.NewStore("server/incidents.json", true)
 
-	// Controller
 	incidentsCtrl := &controllers.IncidentsController{
 		Store:      store,
 		UploadsDir: uploadsDir,
 	}
 
-	// Rutas
 	routes.RegisterIncidentRoutes(r, incidentsCtrl)
 
 	return r

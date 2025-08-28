@@ -76,8 +76,8 @@ type InputProps = {
     id?: string;
     required?: boolean;
     disabled?: boolean;
-    type?: React.HTMLInputTypeAttribute; // "text" | "number" | ...
-    inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"]; // "decimal" | "numeric" | ...
+    type?: React.HTMLInputTypeAttribute;
+    inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"];
     min?: number;
     max?: number;
     step?: number | "any";
