@@ -1,3 +1,5 @@
+import type { GeoJSONPoint } from "../types/types";
+
 const helpers = {
     validate: ({ title, incidentType, lat, lng }: ValidateInput) => {
         const e: Record<string, string> = {};
@@ -26,7 +28,40 @@ const helpers = {
         const lngNum = Number(lng);
         if (!Number.isFinite(latNum) || !Number.isFinite(lngNum)) return undefined;
         return { latitude: latNum, longitude: lngNum };
+    },
+    timeAgo: (iso: string): string => {
+        const now = new Date().getTime();
+        const then = new Date(iso).getTime();
+        const diff = Math.max(0, now - then);
+
+        const s = Math.floor(diff / 1000);
+        const m = Math.floor(s / 60);
+        const h = Math.floor(m / 60);
+        const d = Math.floor(h / 24);
+
+        if (d > 0) return `${d}d ago`;
+        if (h > 0) return `${h}h ago`;
+        if (m > 0) return `${m}m ago`;
+        return `${s}s ago`;
+    },
+    typeColor: (t: string): { bg: string } => {
+        const key = t.toLowerCase();
+        if (key === "fire") return { bg: "#ef4444" };     // red-500
+        if (key === "medical") return { bg: "#10b981" };  // emerald-500
+        if (key === "police") return { bg: "#6366f1" };   // indigo-500
+        return { bg: "#6b7280" }; // gray-500 (default)
+    },
+    locationLabel: (loc?: GeoJSONPoint): string | null => {
+        if (!loc) return null;
+
+        const { latitude, longitude } = loc
+        if (Number.isFinite(latitude) && Number.isFinite(longitude)) {
+            return `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
+        }
+        return null;
     }
+
+
 
 }
 
@@ -41,10 +76,6 @@ type BuildLocationInput = {
     lat?: string,
     lng?: string
 }
-export type GeoJSONPoint = {
-    latitude:  number;
-    longitude: number
-};
 
 
 export default helpers

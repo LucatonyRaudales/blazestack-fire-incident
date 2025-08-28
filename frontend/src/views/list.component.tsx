@@ -1,21 +1,7 @@
-/**
- * 94% of this code was made by AI. the time finished up
- */
+import { API_URL } from "./index.page";
+import helpers from "../helpers/helpers";
+import type { Incident } from "../types/types";
 
-import { API_URL } from "./App";
-import type { GeoJSONPoint } from "./helpers/helpers";
-
-
-
-export type Incident = {
-    id: string | number;
-    title: string;
-    description?: string;
-    incident_type: string; // e.g., "fire" | "medical" | "police"
-    location?: GeoJSONPoint;
-    imageUrl?: string;    // adjust to your backend field name if different
-    created_at?: string;   // ISO string (optional)
-};
 
 export default function IncidentListPage({ incidents, loading, error }: IncidentListPageProps) {
 
@@ -53,14 +39,13 @@ type IncidentListPageProps = {
 
 /* ------------------------- UI subcomponents ------------------------- */
 
-function IncidentCard({ incident }: { incident: Incident }) {
-    const color = typeColor(incident.incident_type);
-    const when = incident.created_at ? timeAgo(incident.created_at) : null;
-    const locText = locationLabel(incident.location);
+const IncidentCard = ({ incident }: { incident: Incident }) => {
+    const color = helpers.typeColor(incident.incident_type);
+    const when = incident.createdAt ? helpers.timeAgo(incident.createdAt) : null;
+    const locText = helpers.locationLabel(incident.location);
 
     return (
         <article className="overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition hover:shadow-md">
-            {/* Image / placeholder */}
             {incident.imageUrl ? (
                 <img
                     src={API_URL + incident.imageUrl}
@@ -92,16 +77,16 @@ function IncidentCard({ incident }: { incident: Incident }) {
 
                 <div className="flex items-center justify-between text-xs text-neutral-500">
                     <span className="truncate">
-                        {locText ? `📍 ${locText}` : "—"}
+                        📍 {locText ? locText : "—"}
                     </span>
-                    {when && <span title={new Date(incident.created_at!).toLocaleString()}>⏱ {when}</span>}
+                    {when && <span title={new Date(incident.createdAt!).toLocaleString()}>⏱ {when}</span>}
                 </div>
             </div>
         </article>
     );
 }
 
-function SkeletonGrid() {
+const SkeletonGrid = () => {
     return (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {Array.from({ length: 6 }).map((_, i) => (
@@ -123,42 +108,4 @@ function SkeletonGrid() {
             ))}
         </div>
     );
-}
-
-
-
-/* ------------------------------ helpers ----------------------------- */
-
-function typeColor(t: string): { bg: string } {
-    const key = t.toLowerCase();
-    if (key === "fire") return { bg: "#ef4444" };     // red-500
-    if (key === "medical") return { bg: "#10b981" };  // emerald-500
-    if (key === "police") return { bg: "#6366f1" };   // indigo-500
-    return { bg: "#6b7280" }; // gray-500 (default)
-}
-
-function timeAgo(iso: string): string {
-    const now = new Date().getTime();
-    const then = new Date(iso).getTime();
-    const diff = Math.max(0, now - then);
-
-    const s = Math.floor(diff / 1000);
-    const m = Math.floor(s / 60);
-    const h = Math.floor(m / 60);
-    const d = Math.floor(h / 24);
-
-    if (d > 0) return `${d}d ago`;
-    if (h > 0) return `${h}h ago`;
-    if (m > 0) return `${m}m ago`;
-    return `${s}s ago`;
-}
-
-function locationLabel(loc?: GeoJSONPoint): string | null {
-    if (!loc) return null;
-
-    const { latitude, longitude } = loc
-    if (Number.isFinite(latitude) && Number.isFinite(longitude)) {
-        return `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
-    }
-    return null;
 }

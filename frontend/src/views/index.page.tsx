@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import Button from "./components/button";
-import Input from "./components/input";
-import Dropdown from "./components/dropdown";
-import IncidentListPage, { type Incident } from "./list";
-import helpers from "./helpers/helpers";
+import Button from "../components/button";
+import Input from "../components/input";
+import Dropdown from "../components/dropdown";
+import IncidentListPage from "./list.component";
+import helpers from "../helpers/helpers";
+import type { Incident } from "../types/types";
 
 type IncidentType = "FIRE" | "ELECTRICAL" | "HAZMAT";
 
@@ -32,7 +33,7 @@ export default function App() {
   const [message, setMessage] = useState<string | null>(null);
 
 
-  // incident list
+  // incident list component state
   const [incidents, setIncidents] = useState<Incident[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
