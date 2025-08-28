@@ -1,0 +1,26 @@
+[
+  {
+    "id": "47200d49-c52f-447b-b430-3949cb0dd8f4",
+    "title": "ddsad",
+    "description": "dsa",
+    "incident_type": "ELECTRICAL",
+    "imageUrl": "/uploads/60717aad-deba-4abb-a96d-38b75ff4009c.png",
+    "createdAt": "2025-08-28T17:30:13Z"
+  },
+  {
+    "id": "482e1963-05f7-45a2-8dc1-3aac33b79fbc",
+    "title": "titlle",
+    "description": "dsa",
+    "incident_type": "ELECTRICAL",
+    "imageUrl": "/uploads/c206ab73-5064-4fc0-b0cf-3ebe0b0753c3.png",
+    "createdAt": "2025-08-28T17:17:40Z"
+  },
+  {
+    "id": "8f86b371-0c36-4eab-97f3-ffc9b9ff399a",
+    "title": "Hola",
+    "description": "dsa",
+    "incident_type": "HAZMAT",
+    "imageUrl": "/uploads/229133c4-09e7-4c98-a998-637dae36b5f3.png",
+    "createdAt": "2025-08-28T17:05:00Z"
+  }
+]
