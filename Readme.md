@@ -25,7 +25,6 @@ cd frontend && yarn && yarn dev
 cd backend && go mod tidy && go run main.go
 ```
 
-> **Tip**: By default the frontend targets `http://localhost:3000` for the API. You can override with `VITE_API_BASE`.
 
 ---
 
@@ -35,7 +34,7 @@ cd backend && go mod tidy && go run main.go
 * **Backend:** Go (Gin), in-memory store, file uploads served from `/uploads`
 * **Flow:** React calls `GET/POST /api/incidents`; Gin handles `application/json` and `multipart/form-data` (image), stores in memory, and serves static uploads.
 
-**Diagram (plain text, no Mermaid)**
+**Diagram**
 
 ```text
 +---------+          +------------------+         +-------------------------+
