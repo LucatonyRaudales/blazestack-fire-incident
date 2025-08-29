@@ -35,15 +35,21 @@ cd backend && go mod tidy && go run main.go
 * **Backend:** Go (Gin), in-memory store, file uploads served from `/uploads`
 * **Flow:** React calls `GET/POST /api/incidents`; Gin handles `application/json` and `multipart/form-data` (image), stores in memory, and serves static uploads.
 
-```mermaid
-flowchart LR
-  U[User] --> V[React (Vite)]
-  V <--> A[API /api/incidents (Gin)]
-  A --> M[In-memory store]
-  A --> F[Uploads (static)]
-  subgraph Dev
-    V -. Docker Compose orchestrates .- A
-  end
+**Diagram (plain text, no Mermaid)**
+
+```text
++---------+          +------------------+         +-------------------------+
+|  User   | <------> | React (Vite) SPA | <-----> | API (Go Gin) /api/...  |
++---------+          +------------------+         +-------------------------+
+                                                      |             |
+                                                      v             v
+                                            +----------------+   +------------------+
+                                            | In-memory data |   | /uploads (static)|
+                                            +----------------+   +------------------+
+
+Dev: `docker compose` runs both services
+- Frontend: http://localhost:5173
+- Backend : http://localhost:3000
 ```
 
 ---
