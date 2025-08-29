@@ -37,12 +37,12 @@ cd backend && go mod tidy && go run main.go
 
 ```mermaid
 flowchart LR
-  U[👤 User] --> V[⚡ React (Vite)]
-  V <--> A[🧭 API /api/incidents (Gin)]
-  A --> M[(🧠 In-memory Store)]
-  A --> F[/📁 /uploads (static)/]
+  U[User] --> V[React (Vite)]
+  V <--> A[API /api/incidents (Gin)]
+  A --> M[In-memory store]
+  A --> F[/uploads (static)/]
   subgraph Dev
-    V -.Docker Compose orchestrates-. A
+    V -. Docker Compose orchestrates .- A
   end
 ```
 
@@ -206,3 +206,6 @@ cd backend && go mod tidy && go run main.go
 
 ---
 
+## 🧾 License
+
+MIT — do what you love. Credit appreciated.
