@@ -40,7 +40,7 @@ flowchart LR
   U[User] --> V[React (Vite)]
   V <--> A[API /api/incidents (Gin)]
   A --> M[In-memory store]
-  A --> F[/uploads (static)/]
+  A --> F[Uploads (static)]
   subgraph Dev
     V -. Docker Compose orchestrates .- A
   end
@@ -203,9 +203,3 @@ cd backend && go mod tidy && go run main.go
 * [ ] `POST /api/incidents` (multipart) uploads an image and returns `imageUrl`
 * [ ] `GET /api/incidents` lists items with `createdAt`
 * [ ] Uploaded files are reachable under `http://localhost:3000/uploads/...`
-
----
-
-## 🧾 License
-
-MIT — do what you love. Credit appreciated.
