@@ -1,23 +1,31 @@
-````markdown
-# 🔥 Incidents — Mini Full-Stack App - Tony Raudales
+# 🔥 Incidents — Mini Full‑Stack App (by Tony Raudales)
 
-> Report and view **incidents** with image and location (lat/lng). Frontend in **React + Vite + Tailwind** and backend in **Go (Gin)**.
+> Report and view **incidents** with optional image and location (lat/lng). Frontend in **React + Vite + Tailwind** and backend in **Go (Gin)**.
 
 ---
 
 ## 🚀 Quick start
 
-> One command to boot **frontend** and **backend** in dev:
+**Dev with Docker (recommended)**
 
 ```bash
 docker compose up --build
-````
+```
 
 * Frontend: [http://localhost:5173](http://localhost:5173)
 * Backend / API: [http://localhost:3000](http://localhost:3000)
 
-> \[!TIP]
-> Running locally without Docker: `yarn dev` in `frontend/` and `go run main.go` in `backend/`.
+**Dev without Docker**
+
+```bash
+# Frontend
+cd frontend && yarn && yarn dev
+
+# Backend
+cd backend && go mod tidy && go run main.go
+```
+
+> **Tip**: By default the frontend targets `http://localhost:3000` for the API. You can override with `VITE_API_BASE`.
 
 ---
 
@@ -25,7 +33,7 @@ docker compose up --build
 
 * **Frontend:** React + TypeScript + Vite + TailwindCSS
 * **Backend:** Go (Gin), in-memory store, file uploads served from `/uploads`
-* **Flow:** React talks to `GET/POST /api/incidents`; Gin handles JSON + multipart (image), stores in memory, and exposes static uploads.
+* **Flow:** React calls `GET/POST /api/incidents`; Gin handles `application/json` and `multipart/form-data` (image), stores in memory, and serves static uploads.
 
 ```mermaid
 flowchart LR
@@ -42,9 +50,7 @@ flowchart LR
 
 ## 📚 API — quick reference
 
-### ➕ Create incident
-
-* **JSON**
+### ➕ Create incident (JSON)
 
 ```http
 POST /api/incidents
@@ -56,11 +62,37 @@ Content-Type: application/json
   "title": "Warehouse fire",
   "incident_type": "fire",
   "description": "Smoke in sector A",
-  "location": { "latitude": 14.08121, "longitude": -87.18501 } // optional
+  "location": { "latitude": 14.08121, "longitude": -87.18501 }
 }
 ```
 
+* `location` is **optional**. If present, the server stores it **as received** (no geocoding/rounding).
 
+### ➕ Create incident (multipart with image)
+
+```http
+POST /api/incidents
+Content-Type: multipart/form-data
+```
+
+**Fields**
+
+* `title` *(string, required)*
+* `incident_type` *(string, required)* — e.g., `fire`, `accident`
+* `description` *(string, optional)*
+* `location` *(string, optional)* — JSON string, e.g. `{"latitude":14.08121,"longitude":-87.18501}`
+* `image` *(file, optional)* — png/jpg/jpeg
+
+**cURL example**
+
+```bash
+curl -X POST http://localhost:3000/api/incidents \
+  -F "title=Warehouse fire" \
+  -F "incident_type=fire" \
+  -F "description=Smoke in sector A" \
+  -F 'location={"latitude":14.08121,"longitude":-87.18501}' \
+  -F image=@/path/to/photo.jpg
+```
 
 ### 📜 List incidents
 
@@ -84,80 +116,76 @@ GET /api/incidents
 
 ---
 
-## ⚙️ Environment variables
+## ⚙️ Configuration
 
-**Frontend (Vite)** — available via `import.meta.env`
+**Frontend (Vite)** — available via `import.meta.env`:
 
-* `VITE_API_BASE` → API base URL (dev default: `http://localhost:3000`)
+* `VITE_API_BASE` → API base URL (default dev: `http://localhost:3000`).
 
+**Backend**
+
+* No environment variables required for dev. Static files are served from `/uploads`.
 
 ---
 
 ## 🧠 Tradeoffs & assumptions
 
-* **Storage:** in-memory (ephemeral) to keep the demo simple; not persistent.
-* **Uploads:** local filesystem (`/uploads`); good for dev, not for large-scale prod.
+* **Storage:** in-memory (ephemeral) to keep the demo simple → not persistent.
+* **Uploads:** local filesystem (`/uploads`) → great for dev, not for large-scale prod.
 * **Validation:** basic (required `title`, `incident_type`, rudimentary lat/lng checks).
-  *With more time:* adopt **Yup** or **Zod** schemas (shared types, stricter runtime validation).
-* **Global state:** currently minimal local component state.
-  *With more time:* add **global state** (e.g., Zustand or Redux Toolkit) for cross-page sharing, caching, and optimistic updates.
-* **UI components:** leveraged Tailwind UI-style components from public examples and **adapted** for speed.
+
+  * *Future:* adopt **Zod**/**Yup** for shared schemas & stricter runtime validation.
+* **Global state:** minimal local component state today.
+
+  * *Future:* **Zustand** or **Redux Toolkit** for cross-page state + optimistic updates.
+* **CORS:** enabled for local dev (frontend ↔ backend at different ports).
 
 ---
 
-## 🗂️ Backend folder structure
+## 🗂️ Backend folder structure (target)
 
-> This is the structure I typically aim for. Due to time constraints and a couple of hiccups, the current code is flatter, but this is the **preferred** layout:
+> Current code is intentionally flat for speed. This is the **preferred layout** long-term:
 
 ```
 backend/
 ├─ main.go
-├─ incident/                # Each model in a real project would have its own folder and subfolders like this.
-│  ├─ controllers/   
-│  ├─ routes/               # routes for all those incident controllers
+├─ incident/
+│  ├─ controllers/
+│  ├─ routes/
 │  ├─ storage/
-│  ├─ model/
+│  └─ model/
 ├─ uploads/                 # static uploads (dev)
 ├─ go.mod
-└─ go.work                
+└─ go.work
 ```
 
 ---
 
-## ✅ What’s done vs. ➕ What I’d add with more time
+## ✅ What’s done vs. ➕ Next up
 
 **Done**
 
 * Create/List incidents (JSON & multipart).
 * Optional image upload with absolute `imageUrl`.
 * Location as `{ latitude, longitude }`.
-* Polished UI: validated form, dropdown, skeletons/empty state, responsive cards.
+* Polished UI: validated form, dropdown, skeleton/empty state, responsive cards.
 * Dev Dockerization (`docker compose up --build`).
 
 **Next**
 
 * **Global state** (Zustand/Redux Toolkit) + API caching & optimistic UI.
-* **Validation with Yup/Zod** (shared types, schema-driven forms).
+* **Schema validation** (Zod/Yup) & shared types.
 * Real DB (Postgres) + migrations; optionally **PostGIS** for geo queries.
 * Object storage (S3/GCS) with **presigned uploads** + CDN.
 * Filtering, search, pagination; edit/delete; sorting.
 * AuthN/AuthZ (JWT/OAuth), rate limiting, structured logs & tracing.
 * OpenAPI/Swagger, unit/integration tests, CI/CD.
 * Map view (Leaflet/Mapbox), bulk actions.
-* Improved architecture (services/repositories), proper error model and config module.
-
-
----
-
-## 🤖 If I used AI — what for (1–3 bullets)
-
-* Drafting logical **helpers** and boilerplate; reviewing and improving code structure.
-* Generating and adapting **UI components** (Tailwind-based) for speed under time constraints.
-* Writing and polishing **documentation** (this README), and suggesting validation/architecture improvements.
+* Improved architecture (services/repositories), error model & config module.
 
 ---
 
-## 🛠️ Local scripts (handy)
+## 🛠️ Handy scripts
 
 ```bash
 # Frontend
@@ -166,3 +194,15 @@ cd frontend && yarn && yarn dev
 # Backend
 cd backend && go mod tidy && go run main.go
 ```
+
+---
+
+## 🧪 Smoke test checklist
+
+* [ ] `POST /api/incidents` (JSON) creates an incident
+* [ ] `POST /api/incidents` (multipart) uploads an image and returns `imageUrl`
+* [ ] `GET /api/incidents` lists items with `createdAt`
+* [ ] Uploaded files are reachable under `http://localhost:3000/uploads/...`
+
+---
+
